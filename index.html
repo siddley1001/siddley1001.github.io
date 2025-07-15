@@ -5,83 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CFA Level II Formula Visualizer</title>
     
-    <!-- Load React and ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- React and ReactDOM (latest stable versions) -->
+    <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
     
-    <!-- Load Babel for JSX transformation -->
-    <script src="https://unpkg.com/@babel/standalone@7.23.4/babel.min.js"></script>
+    <!-- Babel Standalone for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
     
-    <!-- Load Recharts for charts -->
-    <script src="https://unpkg.com/recharts@2.8.0/umd/recharts.min.js"></script>
+    <!-- Recharts (verified version) -->
+    <script src="https://unpkg.com/recharts@2.12.7/umd/recharts.min.js"></script>
     
-    <!-- Load Lucide React for icons -->
-    <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.min.js"></script>
+    <!-- Lucide React (verified version) -->
+    <script src="https://unpkg.com/lucide-react@0.441.0/dist/umd/lucide-react.min.js"></script>
     
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com/3.4.13"></script>
 </head>
 <body>
     <div id="root"></div>
     
+    <!-- Fallback content if JavaScript fails -->
+    <noscript>
+        <div style="padding: 20px; text-align: center;">
+            <h1>JavaScript is disabled</h1>
+            <p>Please enable JavaScript to view the CFA Level II Formula Visualizer.</p>
+        </div>
+    </noscript>
+    
     <script type="text/babel">
         // Debug library loading
-        console.log('Libraries loaded:', {
-            React: typeof React,
-            ReactDOM: typeof ReactDOM,
-            Recharts: typeof Recharts,
-            LucideReact: typeof LucideReact
-        });
+        try {
+            console.log('Libraries loaded:', {
+                React: typeof React,
+                ReactDOM: typeof ReactDOM,
+                Recharts: typeof Recharts,
+                LucideReact: typeof LucideReact
+            });
+        } catch (e) {
+            console.error('Error checking libraries:', e);
+        }
 
         // Destructure global objects
-        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
-        const { Calculator, TrendingUp } = LucideReact;
-        const { useState } = React;
+        try {
+            const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+            const { Calculator, TrendingUp } = LucideReact;
+            const { useState } = React;
 
-        // Main component
-        const CFALevel2Visualizer = () => {
-            const [activeCategory, setActiveCategory] = useState('quantitative');
-            const [activeFormula, setActiveFormula] = useState('multipleRegression');
-            const [inputs, setInputs] = useState({
-                sampleSize: 100,
-                rSquared: 0.75,
-                numIndepVars: 3,
-                alpha: 0.05
-            });
+            // Main component
+            const CFALevel2Visualizer = () => {
+                const [activeCategory, setActiveCategory] = useState('quantitative');
+                const [activeFormula, setActiveFormula] = useState('multipleRegression');
+                const [inputs, setInputs] = useState({
+                    sampleSize: 100,
+                    rSquared: 0.75,
+                    numIndepVars: 3,
+                    alpha: 0.05
+                });
 
-            // Log component rendering for debugging
-            console.log('CFALevel2Visualizer rendered');
+                // Log component rendering
+                console.log('CFALevel2Visualizer rendered with inputs:', inputs);
 
-            return (
-                <div className="p-8 max-w-4xl mx-auto">
-                    <h1 className="text-3xl font-bold text-blue-600 mb-4 flex items-center">
-                        <Calculator className="mr-2" /> CFA Level II Formula Visualizer
-                    </h1>
-                    <p className="text-lg text-gray-600 mb-4">
-                        Active Category: {activeCategory}
-                    </p>
-                    <p className="text-lg text-gray-600 mb-4">
-                        Active Formula: {activeFormula}
-                    </p>
-                    <div className="p-4 bg-blue-50 rounded-lg">
-                        <p className="text-gray-700">
-                            Sample Size: {inputs.sampleSize}, R²: {inputs.rSquared}, 
-                            Independent Variables: {inputs.numIndepVars}, Alpha: {inputs.alpha}
+                return (
+                    <div className="p-8 max-w-4xl mx-auto">
+                        <h1 className="text-3xl font-bold text-blue-600 mb-4 flex items-center">
+                            <Calculator className="mr-2" size={24} /> 
+                            CFA Level II Formula Visualizer
+                        </h1>
+                        <p className="text-lg text-gray-600 mb-4">
+                            Active Category: <span className="font-semibold">{activeCategory}</span>
                         </p>
-                        <button
-                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                            onClick={() => setInputs({ ...inputs, sampleSize: inputs.sampleSize + 10 })}
-                        >
-                            <TrendingUp className="inline mr-2" /> Increase Sample Size
-                        </button>
+                        <p className="text-lg text-gray-600 mb-4">
+                            Active Formula: <span className="font-semibold">{activeFormula}</span>
+                        </p>
+                        <div className="p-4 bg-blue-50 rounded-lg">
+                            <p className="text-gray-700">
+                                Sample Size: {inputs.sampleSize}, R²: {inputs.rSquared}, 
+                                Independent Variables: {inputs.numIndepVars}, Alpha: {inputs.alpha}
+                            </p>
+                            <button
+                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onClick={() => setInputs({ ...inputs, sampleSize: inputs.sampleSize + 10 })}
+                            >
+                                <TrendingUp className="inline mr-2" size={20} /> 
+                                Increase Sample Size
+                            </button>
+                        </div>
                     </div>
-                </div>
-            );
-        };
+                );
+            };
 
-        // Render the component
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<CFALevel2Visualizer />);
+            // Render the component
+            const root = ReactDOM.createRoot(document.getElementById('root'));
+            root.render(<CFALevel2Visualizer />);
+        } catch (e) {
+            console.error('Error in component rendering:', e);
+            document.getElementById('root').innerHTML = `
+                <div style="padding: 20px; text-align: center; color: red;">
+                    <h1>Error Loading Application</h1>
+                    <p>An error occurred while rendering the app. Please check the console for details.</p>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
