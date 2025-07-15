@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CFA Level II Formula Visualizer</title>
     
-    <!-- React and ReactDOM (latest stable versions) -->
-    <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.development.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.development.js"></script>
     
-    <!-- Babel Standalone for JSX transformation -->
-    <script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.25.6/babel.min.js"></script>
     
-    <!-- Recharts (verified version) -->
-    <script src="https://unpkg.com/recharts@2.12.7/umd/recharts.min.js"></script>
-    
-    <!-- Lucide React (verified version) -->
-    <script src="https://unpkg.com/lucide-react@0.441.0/dist/umd/lucide-react.min.js"></script>
+    <!-- Lucide React -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide-react@0.441.0/dist/umd/lucide-react.min.js"></script>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.4.13"></script>
@@ -24,10 +21,10 @@
 <body>
     <div id="root"></div>
     
-    <!-- Fallback content if JavaScript fails -->
+    <!-- Fallback for no JavaScript -->
     <noscript>
-        <div style="padding: 20px; text-align: center;">
-            <h1>JavaScript is disabled</h1>
+        <div style="padding: 20px; text-align: center; color: red;">
+            <h1>JavaScript Disabled</h1>
             <p>Please enable JavaScript to view the CFA Level II Formula Visualizer.</p>
         </div>
     </noscript>
@@ -38,71 +35,90 @@
             console.log('Libraries loaded:', {
                 React: typeof React,
                 ReactDOM: typeof ReactDOM,
-                Recharts: typeof Recharts,
                 LucideReact: typeof LucideReact
             });
         } catch (e) {
             console.error('Error checking libraries:', e);
+            document.getElementById('root').innerHTML = `
+                <div style="padding: 20px; text-align: center; color: red;">
+                    <h1>Library Loading Error</h1>
+                    <p>Failed to load libraries. Check console for details.</p>
+                </div>
+            `;
         }
 
-        // Destructure global objects
         try {
-            const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
-            const { Calculator, TrendingUp } = LucideReact;
+            // Destructure globals
             const { useState } = React;
+            const { Calculator, TrendingUp, createIcons } = LucideReact;
+
+            // Initialize Lucide icons
+            createIcons({ icons: { Calculator, TrendingUp } });
 
             // Main component
             const CFALevel2Visualizer = () => {
-                const [activeCategory, setActiveCategory] = useState('quantitative');
-                const [activeFormula, setActiveFormula] = useState('multipleRegression');
-                const [inputs, setInputs] = useState({
-                    sampleSize: 100,
-                    rSquared: 0.75,
-                    numIndepVars: 3,
-                    alpha: 0.05
-                });
+                const [count, setCount] = useState(0);
 
-                // Log component rendering
-                console.log('CFALevel2Visualizer rendered with inputs:', inputs);
+                // Log rendering
+                console.log('CFALevel2Visualizer rendered with count:', count);
 
-                return (
-                    <div className="p-8 max-w-4xl mx-auto">
-                        <h1 className="text-3xl font-bold text-blue-600 mb-4 flex items-center">
-                            <Calculator className="mr-2" size={24} /> 
-                            CFA Level II Formula Visualizer
-                        </h1>
-                        <p className="text-lg text-gray-600 mb-4">
-                            Active Category: <span className="font-semibold">{activeCategory}</span>
-                        </p>
-                        <p className="text-lg text-gray-600 mb-4">
-                            Active Formula: <span className="font-semibold">{activeFormula}</span>
-                        </p>
-                        <div className="p-4 bg-blue-50 rounded-lg">
-                            <p className="text-gray-700">
-                                Sample Size: {inputs.sampleSize}, R²: {inputs.rSquared}, 
-                                Independent Variables: {inputs.numIndepVars}, Alpha: {inputs.alpha}
+                // Fallback to React.createElement if JSX fails
+                try {
+                    return (
+                        <div className="p-8 max-w-4xl mx-auto">
+                            <h1 className="text-3xl font-bold text-blue-600 mb-4 flex items-center">
+                                <Calculator className="mr-2" size={24} />
+                                CFA Level II Formula Visualizer
+                            </h1>
+                            <p className="text-lg text-gray-600 mb-4">
+                                Count: <span className="font-semibold">{count}</span>
                             </p>
                             <button
-                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                                onClick={() => setInputs({ ...inputs, sampleSize: inputs.sampleSize + 10 })}
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onClick={() => setCount(count + 1)}
                             >
-                                <TrendingUp className="inline mr-2" size={20} /> 
-                                Increase Sample Size
+                                <TrendingUp className="inline mr-2" size={20} />
+                                Increment Count
                             </button>
                         </div>
-                    </div>
-                );
+                    );
+                } catch (e) {
+                    console.error('JSX rendering error:', e);
+                    return React.createElement(
+                        'div',
+                        { className: 'p-8 max-w-4xl mx-auto' },
+                        React.createElement(
+                            'h1',
+                            { className: 'text-3xl font-bold text-blue-600 mb-4' },
+                            'CFA Level II Formula Visualizer (Fallback)'
+                        ),
+                        React.createElement(
+                            'p',
+                            { className: 'text-lg text-gray-600' },
+                            'Count: ' + count
+                        ),
+                        React.createElement(
+                            'button',
+                            {
+                                className: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600',
+                                onClick: () => setCount(count + 1)
+                            },
+                            'Increment Count'
+                        )
+                    );
+                }
             };
 
-            // Render the component
+            // Render component
             const root = ReactDOM.createRoot(document.getElementById('root'));
-            root.render(<CFALevel2Visualizer />);
+            root.render(React.createElement(CFALevel2Visualizer));
         } catch (e) {
-            console.error('Error in component rendering:', e);
+            console.error('Error rendering component:', e);
             document.getElementById('root').innerHTML = `
                 <div style="padding: 20px; text-align: center; color: red;">
-                    <h1>Error Loading Application</h1>
-                    <p>An error occurred while rendering the app. Please check the console for details.</p>
+                    <h1>Application Error</h1>
+                    <p>Failed to render the app. Check console for details.</p>
+                    <p>Error: ${e.message}</p>
                 </div>
             `;
         }
