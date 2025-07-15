@@ -5,33 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CFA Level II Formula Visualizer</title>
     
-    <!-- React (Development versions for easier debugging) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone@7.23.4/babel.min.js"></script>
-    
-    <!-- Recharts -->
     <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
-    
-    <!-- Lucide React Icons -->
     <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.js"></script>
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        // Add this line first to check if libraries loaded
-        console.log('React:', typeof React);
-        console.log('ReactDOM:', typeof ReactDOM);
-        console.log('Recharts:', typeof Recharts);
-        console.log('LucideReact:', typeof LucideReact);
-        
-        // Your component code here...
+        // Destructure from global objects
+        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, ScatterChart, Scatter, AreaChart, Area, ComposedChart } = Recharts;
+        const { Calculator, TrendingUp, BarChart3, Activity, Target, DollarSign, Zap, Globe, Shield, Layers, Brain, Building, Users, Briefcase, BookOpen, Eye, AlertTriangle } = LucideReact;
+        const { useState, useEffect } = React;
+
+        const CFALevel2Visualizer = () => {
+            // Your component code here (but remove the import statements at the top)
+            // ... rest of your component
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<CFALevel2Visualizer />);
     </script>
 </body>
 </html>
