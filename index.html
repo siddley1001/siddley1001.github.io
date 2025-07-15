@@ -5,27 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CFA Level II Formula Visualizer</title>
     
+    <!-- Load React and ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Load Babel for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone@7.23.4/babel.min.js"></script>
-    <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
-    <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.js"></script>
+    
+    <!-- Load Recharts for charts -->
+    <script src="https://unpkg.com/recharts@2.8.0/umd/recharts.min.js"></script>
+    
+    <!-- Load Lucide React for icons -->
+    <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.min.js"></script>
+    
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        // Destructure from global objects
-        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, ScatterChart, Scatter, AreaChart, Area, ComposedChart } = Recharts;
-        const { Calculator, TrendingUp, BarChart3, Activity, Target, DollarSign, Zap, Globe, Shield, Layers, Brain, Building, Users, Briefcase, BookOpen, Eye, AlertTriangle } = LucideReact;
-        const { useState, useEffect } = React;
+        // Debug library loading
+        console.log('Libraries loaded:', {
+            React: typeof React,
+            ReactDOM: typeof ReactDOM,
+            Recharts: typeof Recharts,
+            LucideReact: typeof LucideReact
+        });
 
+        // Destructure global objects
+        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = Recharts;
+        const { Calculator, TrendingUp } = LucideReact;
+        const { useState } = React;
+
+        // Main component
         const CFALevel2Visualizer = () => {
-            // Your component code here (but remove the import statements at the top)
-            // ... rest of your component
+            const [activeCategory, setActiveCategory] = useState('quantitative');
+            const [activeFormula, setActiveFormula] = useState('multipleRegression');
+            const [inputs, setInputs] = useState({
+                sampleSize: 100,
+                rSquared: 0.75,
+                numIndepVars: 3,
+                alpha: 0.05
+            });
+
+            // Log component rendering for debugging
+            console.log('CFALevel2Visualizer rendered');
+
+            return (
+                <div className="p-8 max-w-4xl mx-auto">
+                    <h1 className="text-3xl font-bold text-blue-600 mb-4 flex items-center">
+                        <Calculator className="mr-2" /> CFA Level II Formula Visualizer
+                    </h1>
+                    <p className="text-lg text-gray-600 mb-4">
+                        Active Category: {activeCategory}
+                    </p>
+                    <p className="text-lg text-gray-600 mb-4">
+                        Active Formula: {activeFormula}
+                    </p>
+                    <div className="p-4 bg-blue-50 rounded-lg">
+                        <p className="text-gray-700">
+                            Sample Size: {inputs.sampleSize}, R²: {inputs.rSquared}, 
+                            Independent Variables: {inputs.numIndepVars}, Alpha: {inputs.alpha}
+                        </p>
+                        <button
+                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            onClick={() => setInputs({ ...inputs, sampleSize: inputs.sampleSize + 10 })}
+                        >
+                            <TrendingUp className="inline mr-2" /> Increase Sample Size
+                        </button>
+                    </div>
+                </div>
+            );
         };
 
+        // Render the component
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<CFALevel2Visualizer />);
     </script>
